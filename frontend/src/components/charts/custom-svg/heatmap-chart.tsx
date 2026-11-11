@@ -11,67 +11,75 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
   const [tooltip, setTooltip] = React.useState<{
     x: number;
     y: number;
-    text: string;
+    name: string;
+    date: string;
+    status: string;
   } | null>(null);
+
+  // Memoize data extraction to prevent heavy re-render recalculation on cell hover
+  const { employees, dates, lookup } = React.useMemo(() => {
+    if (!data || data.length === 0) {
+      return { employees: [], dates: [], lookup: new Map<string, string>() };
+    }
+
+    const employeesMap = new Map<number, string>();
+    const datesSet = new Set<string>();
+    const lookupMap = new Map<string, string>();
+
+    data.forEach((item) => {
+      employeesMap.set(item.employeeId, item.employeeName);
+      datesSet.add(item.date);
+      lookupMap.set(`${item.employeeId}_${item.date}`, item.status);
+    });
+
+    return {
+      employees: Array.from(employeesMap.entries()).map(([id, name]) => ({
+        id,
+        name,
+      })),
+      dates: Array.from(datesSet).sort(),
+      lookup: lookupMap,
+    };
+  }, [data]);
 
   if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center h-full min-h-[220px] text-xs text-[var(--muted-foreground)]">
-        Empty
+        No attendance heatmap data recorded
       </div>
     );
   }
 
-  // Get unique employees and unique dates sorted
-  const employeesMap = new Map<number, string>();
-  const datesSet = new Set<string>();
+  const cellSize = 20;
+  const cellGap = 4;
+  const nameWidth = 130;
+  const headerHeight = 32;
 
-  data.forEach((item) => {
-    employeesMap.set(item.employeeId, item.employeeName);
-    datesSet.add(item.date);
-  });
-
-  const employees = Array.from(employeesMap.entries()).map(([id, name]) => ({
-    id,
-    name,
-  }));
-  const dates = Array.from(datesSet).sort();
-
-  // Create lookup matrix: employeeId_date -> status
-  const lookup = new Map<string, string>();
-  data.forEach((item) => {
-    lookup.set(`${item.employeeId}_${item.date}`, item.status);
-  });
-
-  const cellSize = 18;
-  const cellGap = 3;
-  const nameWidth = 120;
-  const headerHeight = 28;
-
-  const totalWidth = nameWidth + dates.length * (cellSize + cellGap) + 20;
+  const totalWidth = nameWidth + dates.length * (cellSize + cellGap) + 24;
   const totalHeight = headerHeight + employees.length * (cellSize + cellGap) + 20;
 
   return (
     <div className="relative w-full overflow-x-auto pb-2">
       <svg
-        width={Math.max(600, totalWidth)}
+        width={Math.max(640, totalWidth)}
         height={totalHeight}
         className="font-sans text-[11px]"
+        role="grid"
+        aria-label="Attendance Heatmap Grid"
       >
         {/* Date Headers */}
         {dates.map((d, colIndex) => {
           const x = nameWidth + colIndex * (cellSize + cellGap);
-          // Show label only every few days or when space permits
-          const showLabel = dates.length <= 15 || colIndex % 5 === 0;
+          const showLabel = dates.length <= 15 || colIndex % 4 === 0;
           return (
             <g key={d}>
               {showLabel && (
                 <text
                   x={x + cellSize / 2}
-                  y={headerHeight - 8}
+                  y={headerHeight - 10}
                   textAnchor="middle"
                   fill="var(--muted-foreground)"
-                  className="text-[9px]"
+                  className="text-[10px] font-medium"
                 >
                   {d.slice(5)}
                 </text>
@@ -84,16 +92,16 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
         {employees.map((emp, rowIndex) => {
           const y = headerHeight + rowIndex * (cellSize + cellGap);
           return (
-            <g key={emp.id}>
+            <g key={emp.id} role="row">
               {/* Employee Name */}
               <text
-                x={nameWidth - 8}
+                x={nameWidth - 10}
                 y={y + cellSize / 2 + 4}
                 textAnchor="end"
                 fill="var(--foreground)"
-                className="text-[11px] font-medium"
+                className="text-[11px] font-semibold"
               >
-                {emp.name.length > 14 ? `${emp.name.slice(0, 13)}…` : emp.name}
+                {emp.name.length > 15 ? `${emp.name.slice(0, 14)}…` : emp.name}
               </text>
 
               {/* Cells */}
@@ -102,14 +110,17 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
                 const status = lookup.get(`${emp.id}_${date}`);
 
                 let fill = 'var(--muted)';
-                let stroke = 'transparent';
+                let stroke = 'var(--border)';
 
                 if (status === 'Present') {
-                  fill = 'var(--chart-1)';
+                  fill = 'var(--status-present)';
+                  stroke = 'rgba(16, 185, 129, 0.4)';
                 } else if (status === 'Leave') {
-                  fill = 'var(--chart-4)';
+                  fill = 'var(--status-leave)';
+                  stroke = 'rgba(245, 158, 11, 0.4)';
                 } else if (status === 'Absent') {
-                  fill = 'var(--chart-6)';
+                  fill = 'var(--status-absent)';
+                  stroke = 'rgba(244, 63, 94, 0.4)';
                 }
 
                 return (
@@ -119,20 +130,36 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
                     y={y}
                     width={cellSize}
                     height={cellSize}
-                    rx={3}
+                    rx={5}
                     fill={fill}
                     stroke={stroke}
                     strokeWidth={1}
-                    className="cursor-pointer transition-opacity hover:opacity-75"
+                    role="gridcell"
+                    tabIndex={0}
+                    aria-label={`${emp.name}, ${date}: ${status || 'No record'}`}
+                    className="cursor-pointer transition-all duration-150 hover:scale-110 hover:opacity-90 focus:outline-none focus:ring-1 focus:ring-[var(--ring)]"
                     onMouseEnter={(e) => {
                       const rect = e.currentTarget.getBoundingClientRect();
                       setTooltip({
                         x: rect.left + rect.width / 2,
-                        y: rect.top - 10,
-                        text: `${emp.name} • ${date}: ${status || 'No Record'}`,
+                        y: rect.top - 8,
+                        name: emp.name,
+                        date,
+                        status: status || 'No Record',
                       });
                     }}
                     onMouseLeave={() => setTooltip(null)}
+                    onFocus={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      setTooltip({
+                        x: rect.left + rect.width / 2,
+                        y: rect.top - 8,
+                        name: emp.name,
+                        date,
+                        status: status || 'No Record',
+                      });
+                    }}
+                    onBlur={() => setTooltip(null)}
                   />
                 );
               })}
@@ -141,7 +168,7 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
         })}
       </svg>
 
-      {/* Floating tooltip */}
+      {/* Floating Tooltip */}
       {tooltip && (
         <div
           style={{
@@ -150,25 +177,40 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
             top: `${tooltip.y}px`,
             transform: 'translate(-50%, -100%)',
           }}
-          className="pointer-events-none z-50 rounded bg-[var(--foreground)] px-2 py-1 text-[11px] font-medium text-[var(--background)] shadow-md whitespace-nowrap"
+          className="pointer-events-none z-50 rounded-xl border border-[var(--border)] bg-[var(--card)]/95 backdrop-blur-md px-3 py-2 shadow-xl whitespace-nowrap text-xs space-y-0.5"
         >
-          {tooltip.text}
+          <p className="font-bold text-[var(--foreground)]">{tooltip.name}</p>
+          <div className="flex items-center gap-2 text-[var(--muted-foreground)] text-[11px]">
+            <span>{tooltip.date}</span>
+            <span>•</span>
+            <span
+              className={
+                tooltip.status === 'Present'
+                  ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
+                  : tooltip.status === 'Absent'
+                  ? 'text-rose-600 dark:text-rose-400 font-semibold'
+                  : 'text-amber-700 dark:text-amber-400 font-semibold'
+              }
+            >
+              {tooltip.status}
+            </span>
+          </div>
         </div>
       )}
 
-      {/* Legend */}
-      <div className="flex items-center gap-4 mt-2 text-xs text-[var(--muted-foreground)] pl-2">
-        <div className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-xs bg-[var(--chart-1)]" />
-          <span>Present</span>
+      {/* Modern Legend */}
+      <div className="flex items-center gap-6 mt-3 text-xs text-[var(--muted-foreground)] pl-2 border-t border-[var(--border)]/50 pt-2">
+        <div className="flex items-center gap-2">
+          <span className="w-3.5 h-3.5 rounded-sm bg-[var(--status-present)] shadow-xs" />
+          <span className="font-medium text-[var(--foreground)]">Present</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-xs bg-[var(--chart-4)]" />
-          <span>Leave</span>
+        <div className="flex items-center gap-2">
+          <span className="w-3.5 h-3.5 rounded-sm bg-[var(--status-leave)] shadow-xs" />
+          <span className="font-medium text-[var(--foreground)]">Leave</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-xs bg-[var(--chart-6)]" />
-          <span>Absent</span>
+        <div className="flex items-center gap-2">
+          <span className="w-3.5 h-3.5 rounded-sm bg-[var(--status-absent)] shadow-xs" />
+          <span className="font-medium text-[var(--foreground)]">Absent</span>
         </div>
       </div>
     </div>

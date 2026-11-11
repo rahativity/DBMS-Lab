@@ -20,12 +20,12 @@ export function DailyTrendStackedArea({ data }: { data: DailyTrend[] }) {
     <ResponsiveContainer width="100%" height={260}>
       <AreaChart
         data={data}
-        margin={{ top: 10, right: 10, left: 0, bottom: 5 }}
+        margin={{ top: 10, right: 10, left: -20, bottom: 5 }}
       >
         <CartesianGrid
           stroke="var(--border)"
           strokeDasharray="3 3"
-          opacity={0.4}
+          opacity={0.5}
           vertical={false}
         />
         <XAxis
@@ -42,9 +42,10 @@ export function DailyTrendStackedArea({ data }: { data: DailyTrend[] }) {
           contentStyle={{
             backgroundColor: 'var(--card)',
             borderColor: 'var(--border)',
-            borderRadius: '0.5rem',
+            borderRadius: '0.75rem',
             color: 'var(--foreground)',
             fontSize: '12px',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
           }}
         />
         <Legend
@@ -52,7 +53,7 @@ export function DailyTrendStackedArea({ data }: { data: DailyTrend[] }) {
           height={32}
           iconType="circle"
           formatter={(val: string) => (
-            <span style={{ color: 'var(--foreground)', fontSize: '11px', textTransform: 'capitalize' }}>
+            <span className="text-xs font-semibold text-[var(--foreground)] capitalize">
               {val}
             </span>
           )}
@@ -60,29 +61,35 @@ export function DailyTrendStackedArea({ data }: { data: DailyTrend[] }) {
         <Area
           type="monotone"
           dataKey="present"
+          name="Present"
           stackId="1"
-          stroke="var(--chart-1)"
-          fill="var(--chart-1)"
-          fillOpacity={0.8}
-          animationDuration={800}
+          stroke="var(--status-present)"
+          strokeWidth={2}
+          fill="url(#gradient-present)"
+          fillOpacity={1}
+          animationDuration={900}
         />
         <Area
           type="monotone"
           dataKey="leave"
+          name="Leave"
           stackId="1"
-          stroke="var(--chart-3)"
-          fill="var(--chart-3)"
-          fillOpacity={0.7}
-          animationDuration={800}
+          stroke="var(--status-leave)"
+          strokeWidth={2}
+          fill="url(#gradient-leave)"
+          fillOpacity={1}
+          animationDuration={900}
         />
         <Area
           type="monotone"
           dataKey="absent"
+          name="Absent"
           stackId="1"
-          stroke="var(--chart-5)"
-          fill="var(--chart-5)"
-          fillOpacity={0.6}
-          animationDuration={800}
+          stroke="var(--status-absent)"
+          strokeWidth={2}
+          fill="url(#gradient-absent)"
+          fillOpacity={1}
+          animationDuration={900}
         />
       </AreaChart>
     </ResponsiveContainer>

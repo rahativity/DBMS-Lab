@@ -4,6 +4,7 @@ import * as React from 'react';
 import {
   BarChart,
   Bar,
+  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -11,6 +12,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { HeadcountByDepartment } from '@/types';
+import { CHART_COLORS } from './chart-theme';
 
 export function HeadcountHorizontalBar({
   data,
@@ -24,7 +26,7 @@ export function HeadcountHorizontalBar({
       <BarChart
         data={data}
         layout="vertical"
-        margin={{ top: 5, right: 20, left: 20, bottom: 5 }}
+        margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
       >
         <CartesianGrid
           stroke="var(--border)"
@@ -41,7 +43,7 @@ export function HeadcountHorizontalBar({
           dataKey="departmentName"
           type="category"
           stroke="transparent"
-          width={85}
+          width={90}
           tick={{ fill: 'var(--foreground)', fontSize: 11 }}
         />
         <Tooltip
@@ -49,17 +51,24 @@ export function HeadcountHorizontalBar({
           contentStyle={{
             backgroundColor: 'var(--card)',
             borderColor: 'var(--border)',
-            borderRadius: '0.5rem',
+            borderRadius: '0.75rem',
             color: 'var(--foreground)',
             fontSize: '12px',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
           }}
         />
         <Bar
           dataKey="headcount"
-          fill="var(--chart-1)"
-          radius={[0, 4, 4, 0]}
-          animationDuration={800}
-        />
+          radius={[0, 6, 6, 0]}
+          animationDuration={900}
+        >
+          {data.map((_, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={CHART_COLORS[index % CHART_COLORS.length]}
+            />
+          ))}
+        </Bar>
       </BarChart>
     </ResponsiveContainer>
   );

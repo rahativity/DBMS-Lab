@@ -4,6 +4,7 @@ import * as React from 'react';
 import {
   BarChart,
   Bar,
+  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -21,7 +22,7 @@ export function TopEarnersBar({ data }: { data: TopEarner[] }) {
       <BarChart
         data={data}
         layout="vertical"
-        margin={{ top: 5, right: 20, left: 30, bottom: 5 }}
+        margin={{ top: 5, right: 20, left: 20, bottom: 5 }}
       >
         <CartesianGrid
           stroke="var(--border)"
@@ -43,21 +44,33 @@ export function TopEarnersBar({ data }: { data: TopEarner[] }) {
           tick={{ fill: 'var(--foreground)', fontSize: 11 }}
         />
         <Tooltip
-          formatter={(value: any) => [formatCurrency(Number(value)), 'Compensation']}
+          formatter={(value: any) => [formatCurrency(Number(value)), 'Total Package']}
           contentStyle={{
             backgroundColor: 'var(--card)',
             borderColor: 'var(--border)',
-            borderRadius: '0.5rem',
+            borderRadius: '0.75rem',
             color: 'var(--foreground)',
             fontSize: '12px',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
           }}
         />
         <Bar
           dataKey="totalCompensation"
-          fill="var(--chart-1)"
-          radius={[0, 4, 4, 0]}
-          animationDuration={800}
-        />
+          radius={[0, 6, 6, 0]}
+          animationDuration={900}
+        >
+          {data.map((_, index) => {
+            const fill =
+              index === 0
+                ? 'var(--chart-3)' // Gold
+                : index === 1
+                ? 'var(--chart-1)' // Sapphire
+                : index === 2
+                ? 'var(--chart-7)' // Emerald
+                : 'var(--chart-5)'; // Iris
+            return <Cell key={`cell-${index}`} fill={fill} />;
+          })}
+        </Bar>
       </BarChart>
     </ResponsiveContainer>
   );

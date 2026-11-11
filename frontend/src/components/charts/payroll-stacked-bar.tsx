@@ -21,7 +21,7 @@ export function PayrollStackedBar({ data }: { data: PayrollByDepartment[] }) {
     <ResponsiveContainer width="100%" height={260}>
       <BarChart
         data={data}
-        margin={{ top: 10, right: 10, left: 10, bottom: 5 }}
+        margin={{ top: 10, right: 10, left: 0, bottom: 5 }}
       >
         <CartesianGrid
           stroke="var(--border)"
@@ -42,14 +42,15 @@ export function PayrollStackedBar({ data }: { data: PayrollByDepartment[] }) {
         <Tooltip
           formatter={(value: any, name: any) => [
             formatCurrency(Number(value)),
-            name === 'basicTotal' ? 'Basic' : 'Bonus',
+            name === 'basicTotal' ? 'Basic Salary' : 'Bonus Package',
           ]}
           contentStyle={{
             backgroundColor: 'var(--card)',
             borderColor: 'var(--border)',
-            borderRadius: '0.5rem',
+            borderRadius: '0.75rem',
             color: 'var(--foreground)',
             fontSize: '12px',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
           }}
         />
         <Legend
@@ -57,8 +58,8 @@ export function PayrollStackedBar({ data }: { data: PayrollByDepartment[] }) {
           height={32}
           iconType="circle"
           formatter={(val: string) => (
-            <span style={{ color: 'var(--foreground)', fontSize: '11px' }}>
-              {val === 'basicTotal' ? 'Basic Salary' : 'Bonus'}
+            <span className="text-xs font-semibold text-[var(--foreground)]">
+              {val === 'basicTotal' ? 'Basic Salary' : 'Bonus Allocation'}
             </span>
           )}
         />
@@ -66,14 +67,14 @@ export function PayrollStackedBar({ data }: { data: PayrollByDepartment[] }) {
           dataKey="basicTotal"
           stackId="a"
           fill="var(--chart-1)"
-          animationDuration={800}
+          animationDuration={900}
         />
         <Bar
           dataKey="bonusTotal"
           stackId="a"
-          fill="var(--chart-4)"
-          radius={[4, 4, 0, 0]}
-          animationDuration={800}
+          fill="var(--chart-3)"
+          radius={[6, 6, 0, 0]}
+          animationDuration={900}
         />
       </BarChart>
     </ResponsiveContainer>
