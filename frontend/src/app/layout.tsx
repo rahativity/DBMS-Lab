@@ -4,8 +4,8 @@ import { Shell } from '@/components/layout/shell';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'HR Management System',
-  description: 'Production HR Management System',
+  title: 'NexusHR • Workforce Intelligence',
+  description: 'Enterprise HR Management & Workforce Intelligence Platform',
 };
 
 export default function RootLayout({

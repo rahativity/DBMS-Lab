@@ -42,25 +42,25 @@ export function GaugeChart({
   const activeSweep = Math.max(1, (clampedValue / 100) * sweepAngle);
   const progressArc = describeClockwiseArc(startAngle, activeSweep, radius);
 
-  // Status tiers
-  let tierColor = '#10b981'; // Emerald
-  let tierGlow = 'rgba(16, 185, 129, 0.4)';
+  // Status tiers matching the 5-color palette
+  let tierColor = '#86b9b1'; // Seafoam Sage
+  let tierGlow = 'rgba(134, 185, 177, 0.45)';
   let tierLabel = 'Optimal Target';
   let tierBg =
-    'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/40';
+    'bg-[#e2eceb] text-[#042631] dark:bg-[#86b9b122] dark:text-[#86b9b1] border-[#cfd6d6] dark:border-[#144450]';
 
   if (clampedValue < 70) {
-    tierColor = '#f43f5e'; // Rose
-    tierGlow = 'rgba(244, 63, 94, 0.4)';
+    tierColor = '#4b7273'; // Slate Teal
+    tierGlow = 'rgba(75, 114, 115, 0.45)';
     tierLabel = 'Action Required';
     tierBg =
-      'bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300 border-rose-200 dark:border-rose-800/40';
+      'bg-[#dee5e5] text-[#041420] dark:bg-[#0d3844] dark:text-[#cfd6d6] border-[#cfd6d6] dark:border-[#144450]';
   } else if (clampedValue < 85) {
-    tierColor = '#f59e0b'; // Amber
-    tierGlow = 'rgba(245, 158, 11, 0.4)';
+    tierColor = '#62928e'; // Muted Aqua
+    tierGlow = 'rgba(98, 146, 142, 0.45)';
     tierLabel = 'Moderate Range';
     tierBg =
-      'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300 border-amber-200 dark:border-amber-800/40';
+      'bg-[#edf5f4] text-[#042631] dark:bg-[#a4cec722] dark:text-[#a4cec7] border-[#cfd6d6] dark:border-[#144450]';
   }
 
   // Ticks at 0% (140°), 50% (270°), 100% (400°)

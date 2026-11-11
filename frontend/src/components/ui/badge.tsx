@@ -21,13 +21,13 @@ export function Badge({
   if (status) {
     if (status === 'Present') {
       effectiveVariant = 'present';
-      dotColor = 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]';
-    } else if (status === 'Absent') {
-      effectiveVariant = 'absent';
-      dotColor = 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]';
+      dotColor = 'bg-[#4b7273] dark:bg-[#86b9b1]';
     } else if (status === 'Leave') {
       effectiveVariant = 'leave';
-      dotColor = 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]';
+      dotColor = 'bg-[#86b9b1] dark:bg-[#a4cec7]';
+    } else if (status === 'Absent') {
+      effectiveVariant = 'absent';
+      dotColor = 'bg-[#7b8f91] dark:bg-[#5e8a8b]';
     }
   }
 
@@ -36,12 +36,12 @@ export function Badge({
       className={cn(
         'inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-normal transition-colors',
         {
-          'bg-emerald-50 text-emerald-700 border border-emerald-200/80 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/50':
+          'bg-[#e2eceb] text-[#042631] border border-[#cfd6d6] dark:bg-[#86b9b122] dark:text-[#86b9b1] dark:border-[#144450]':
             effectiveVariant === 'present',
-          'bg-rose-50 text-rose-700 border border-rose-200/80 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800/50':
-            effectiveVariant === 'absent',
-          'bg-amber-50 text-amber-700 border border-amber-200/80 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800/50':
+          'bg-[#edf5f4] text-[#042631] border border-[#cfd6d6] dark:bg-[#a4cec722] dark:text-[#a4cec7] dark:border-[#144450]':
             effectiveVariant === 'leave',
+          'bg-[#dee5e5] text-[#041420] border border-[#cfd6d6] dark:bg-[#5e8a8b22] dark:text-[#cfd6d6] dark:border-[#144450]':
+            effectiveVariant === 'absent',
           'bg-[var(--foreground)] text-[var(--background)]':
             effectiveVariant === 'solid',
           'border border-[var(--border)] text-[var(--foreground)] bg-transparent':

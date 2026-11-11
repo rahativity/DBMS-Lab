@@ -62,12 +62,12 @@ export function TopEarnersBar({ data }: { data: TopEarner[] }) {
           {data.map((_, index) => {
             const fill =
               index === 0
-                ? 'var(--chart-3)' // Gold
+                ? 'var(--chart-1)'
                 : index === 1
-                ? 'var(--chart-1)' // Sapphire
+                ? 'var(--chart-2)'
                 : index === 2
-                ? 'var(--chart-7)' // Emerald
-                : 'var(--chart-5)'; // Iris
+                ? 'var(--chart-3)'
+                : 'var(--chart-4)';
             return <Cell key={`cell-${index}`} fill={fill} />;
           })}
         </Bar>

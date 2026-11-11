@@ -114,13 +114,13 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
 
                 if (status === 'Present') {
                   fill = 'var(--status-present)';
-                  stroke = 'rgba(16, 185, 129, 0.4)';
+                  stroke = 'rgba(75, 114, 115, 0.4)';
                 } else if (status === 'Leave') {
                   fill = 'var(--status-leave)';
-                  stroke = 'rgba(245, 158, 11, 0.4)';
+                  stroke = 'rgba(134, 185, 177, 0.4)';
                 } else if (status === 'Absent') {
                   fill = 'var(--status-absent)';
-                  stroke = 'rgba(244, 63, 94, 0.4)';
+                  stroke = 'rgba(123, 143, 145, 0.4)';
                 }
 
                 return (
@@ -186,10 +186,10 @@ export function HeatmapChart({ data }: HeatmapChartProps) {
             <span
               className={
                 tooltip.status === 'Present'
-                  ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
+                  ? 'text-[#4b7273] dark:text-[#86b9b1] font-semibold'
                   : tooltip.status === 'Absent'
-                  ? 'text-rose-600 dark:text-rose-400 font-semibold'
-                  : 'text-amber-700 dark:text-amber-400 font-semibold'
+                  ? 'text-[#7b8f91] dark:text-[#cfd6d6] font-semibold'
+                  : 'text-[#62928e] dark:text-[#a4cec7] font-semibold'
               }
             >
               {tooltip.status}

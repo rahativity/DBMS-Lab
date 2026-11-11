@@ -7,13 +7,10 @@ import { RefreshCw, Calendar, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const titles: Record<string, { label: string; section: string }> = {
-  '/': { label: 'Executive Dashboard', section: 'Overview' },
-  '/analytics': { label: 'Workforce Intelligence', section: 'Overview' },
-  '/employees': { label: 'Employee Directory', section: 'Workforce' },
-  '/departments': { label: 'Department Structure', section: 'Workforce' },
-  '/salaries': { label: 'Compensation & Payroll', section: 'Finance' },
-  '/attendance': { label: 'Attendance Records', section: 'Logs' },
-  '/report': { label: 'Executive Summary Report', section: 'Reports' },
+  '/employees': { label: 'Employees', section: 'Workforce' },
+  '/departments': { label: 'Departments', section: 'Workforce' },
+  '/salaries': { label: 'Salaries', section: 'Finance & Records' },
+  '/attendance': { label: 'Attendance', section: 'Finance & Records' },
 };
 
 export function Topbar() {
@@ -39,7 +36,7 @@ export function Topbar() {
       {/* Breadcrumbs & Title */}
       <div className="flex flex-col">
         <div className="flex items-center gap-1.5 text-xs text-[var(--muted-foreground)]">
-          <span>CoreHR</span>
+          <span>NexusHR</span>
           <ChevronRight className="w-3 h-3 text-[var(--muted-foreground)]/50" />
           <span>{current.section}</span>
           <ChevronRight className="w-3 h-3 text-[var(--muted-foreground)]/50" />
@@ -54,7 +51,7 @@ export function Topbar() {
       <div className="flex items-center gap-3">
         {/* Date Badge */}
         <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs text-[var(--muted-foreground)] font-medium shadow-2xs">
-          <Calendar className="w-3.5 h-3.5 text-blue-500" />
+          <Calendar className="w-3.5 h-3.5 text-[#4b7273] dark:text-[#86b9b1]" />
           <span>{currentDate}</span>
         </div>
 
@@ -67,7 +64,7 @@ export function Topbar() {
           title="Refresh Data"
           aria-label="Refresh Data"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-blue-500' : ''}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-[#86b9b1]' : ''}`} />
         </Button>
 
         {/* Theme Toggle */}

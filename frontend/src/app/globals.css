@@ -1,61 +1,80 @@
 @import "tailwindcss";
 
 :root {
-  /* Slate & Porcelain canvas */
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  /* Extracted palette from image:
+     #041420 (Deep Abyss), #042631 (Petrol Navy), #4b7273 (Slate Teal), #86b9b1 (Seafoam Sage), #cfd6d6 (Mineral Mist)
+  */
+  --palette-1: #041420;
+  --palette-2: #042631;
+  --palette-3: #4b7273;
+  --palette-4: #86b9b1;
+  --palette-5: #cfd6d6;
+
+  /* Light Mode Canvas */
+  --background: #f5f8f8;
+  --foreground: #041420;
   --card: #ffffff;
-  --card-foreground: #0f172a;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --border: #e2e8f0;
-  --ring: #3b82f6;
+  --card-foreground: #041420;
+  --muted: #e7eeed;
+  --muted-foreground: #4b7273;
+  --border: #cfd6d6;
+  --ring: #4b7273;
 
-  /* Executive Chromatic Palette */
-  --chart-1: #2563eb; /* Royal Sapphire */
-  --chart-2: #0d9488; /* Deep Teal */
-  --chart-3: #f59e0b; /* Warm Amber */
-  --chart-4: #e11d48; /* Coral Crimson */
-  --chart-5: #7c3aed; /* Iris Violet */
-  --chart-6: #0284c7; /* Aegean Sky */
-  --chart-7: #059669; /* Rich Emerald */
+  /* Harmonious Chart Tokens (Light Mode) */
+  --chart-1: #042631; /* Deep Teal */
+  --chart-2: #4b7273; /* Slate Teal */
+  --chart-3: #62928e; /* Muted Aqua */
+  --chart-4: #86b9b1; /* Seafoam Sage */
+  --chart-5: #325a5d; /* Dark Pine */
+  --chart-6: #9fc3bd; /* Pale Seafoam */
+  --chart-7: #b9cfcb; /* Mist Sage */
 
-  /* Semantic Status Tokens */
-  --status-present: #10b981;
-  --status-present-bg: #ecfdf5;
-  --status-absent: #f43f5e;
-  --status-absent-bg: #fff1f2;
-  --status-leave: #f59e0b;
-  --status-leave-bg: #fffbeb;
+  /* Cohesive Status Tokens */
+  --status-present: #4b7273;
+  --status-present-text: #042631;
+  --status-present-bg: #e2eceb;
+
+  --status-leave: #86b9b1;
+  --status-leave-text: #042631;
+  --status-leave-bg: #edf5f4;
+
+  --status-absent: #7b8f91;
+  --status-absent-text: #041420;
+  --status-absent-bg: #dee5e5;
 }
 
 .dark {
-  /* Deep Midnight Slate canvas */
-  --background: #0b0f17;
-  --foreground: #f8fafc;
-  --card: #111827;
-  --card-foreground: #f8fafc;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --border: #1e293b;
-  --ring: #60a5fa;
+  /* Dark Mode Canvas using Deep Midnight & Petrol */
+  --background: #041420;
+  --foreground: #f0f4f4;
+  --card: #042631;
+  --card-foreground: #f0f4f4;
+  --muted: #0d3844;
+  --muted-foreground: #86b9b1;
+  --border: #144450;
+  --ring: #86b9b1;
 
-  /* Luminous Data Tokens for Dark Mode */
-  --chart-1: #3b82f6; /* Bright Sapphire */
-  --chart-2: #14b8a6; /* Radiant Teal */
-  --chart-3: #fbbf24; /* Golden Amber */
-  --chart-4: #fb7185; /* Soft Rose */
-  --chart-5: #a78bfa; /* Vibrant Violet */
-  --chart-6: #38bdf8; /* Cyan Sky */
-  --chart-7: #34d399; /* Mint Emerald */
+  /* Harmonious Chart Tokens (Dark Mode) */
+  --chart-1: #86b9b1; /* Luminous Seafoam */
+  --chart-2: #4b7273; /* Slate Teal */
+  --chart-3: #a4cec7; /* Soft Mint */
+  --chart-4: #cfd6d6; /* Mineral Mist */
+  --chart-5: #5e8a8b; /* Pine Sage */
+  --chart-6: #72a59f; /* Aqua Sage */
+  --chart-7: #c0ded9; /* Pale Jade */
 
-  /* Semantic Status Tokens for Dark Mode */
-  --status-present: #34d399;
-  --status-present-bg: #064e3b33;
-  --status-absent: #fb7185;
-  --status-absent-bg: #88133733;
-  --status-leave: #fbbf24;
-  --status-leave-bg: #78350f33;
+  /* Cohesive Status Tokens (Dark Mode) */
+  --status-present: #86b9b1;
+  --status-present-text: #f0f4f4;
+  --status-present-bg: #86b9b122;
+
+  --status-leave: #a4cec7;
+  --status-leave-text: #f0f4f4;
+  --status-leave-bg: #a4cec722;
+
+  --status-absent: #5e8a8b;
+  --status-absent-text: #cfd6d6;
+  --status-absent-bg: #5e8a8b22;
 }
 
 @theme {
@@ -85,10 +104,9 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   min-height: 100vh;
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
-/* Custom scrollbars */
+/* Refined minimalist scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
